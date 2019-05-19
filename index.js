@@ -3,11 +3,16 @@
 var program = require('commander');
 var AWS = require('aws-sdk');
 
-// Load credentials and set the region from the JSON file
-AWS.config.loadFromPath('./config.json');
+var sqs;
+try {
+  // Load credentials and set the region from the JSON file
+  AWS.config.loadFromPath('./config.json');
 
-// Create an SQS service object
-var sqs = new AWS.SQS({apiVersion: '2012-11-05'});
+  // Create an SQS service object
+  sqs = new AWS.SQS({apiVersion: '2012-11-05'});
+} catch(e) {
+  sqs = new AWS.SQS({apiVersion: '2012-11-05', region: 'us-east-1'});
+}
 
 program
   .arguments('<origin> <destination>')
